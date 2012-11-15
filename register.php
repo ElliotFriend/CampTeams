@@ -5,7 +5,7 @@
     $greeting = "<p>Register as a contact for a college, so that others can request a Camp Team from you</p><p><em>All fields are required</em></p>";
 
     if (isset($_POST['submit'])) {
-        // Empty the alert message, in case there's already one there
+        // Empty the alert message, to start fresh
         $alert = '';
 
         // Check to make sure that all fields are filled out, assign variables if everything looks good
@@ -39,28 +39,34 @@
             $alert = "Please tell us what college you represent";
         }
 
+        if (!empty($_POST['collegeweb'])) {
+            $college_web = $_POST['collegeweb'];
+        } elseif (empty($alert)) {
+            $alert = "Please give us your college website";
+        }
+
         if (!empty($_POST['collegeaddress'])) {
             $college_address = $_POST['collegeaddress'];
         } elseif (empty($alert)) {
-            $alert = "Please enter your college's address";
+            $alert = "Please enter your college address";
         }
 
         if (!empty($_POST['collegecity'])) {
             $college_city = $_POST['collegecity'];
         } elseif (empty($alert)) {
-            $alert = "Please enter your college's city";
+            $alert = "Please enter your college city";
         }
 
         if (!empty($_POST['collegestate'])) {
             $college_state = $_POST['collegestate'];
         } elseif (empty($alert)) {
-            $alert = "Please enter your college's state";
+            $alert = "Please enter your college state";
         }
 
         if (!empty($_POST['collegezip'])) {
             $college_zip = $_POST['collegezip'];
         } elseif (empty($alert)) {
-            $alert = "Please enter your college's zip code";
+            $alert = "Please enter your college zip code";
         }
         
         // If there are no alerts, go ahead and insert the college into the database
@@ -69,8 +75,8 @@
             $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
             
             // Insert the college data into the database and get the college_id back from it
-            $college_query = "INSERT INTO ct_colleges (college_name,college_address,college_city,college_state,college_zip)
-                              VALUES ('$college_name','$college_address','$college_city','$college_state','$college_zip')";
+            $college_query = "INSERT INTO ct_colleges (college_name,college_web,college_address,college_city,college_state,college_zip)
+                              VALUES ('$college_name','$college_web','$college_address','$college_city','$college_state','$college_zip')";
             $college_insert = mysqli_query($dbc, $college_query);
             $college_id = mysqli_insert_id($dbc);
             $alert = mysql_error();
@@ -88,12 +94,12 @@
             }
             else {
                 // Give the message that neither inserts occured
-                $alert = "<p>Looks like that college already has a contact on record</p>";
+                $alert = "<p>Looks like that college already has a contact on record" . mysql_error() . "</p>";
             }
         }
         if (!empty($alert)) {
             echo $greeting;
-            echo $alert;
+            echo '<p>' . $alert . '</p>';
             include('includes/register_form.php');
         }
     }
@@ -103,6 +109,6 @@
     }
 
     mysqli_close($dbc);
-    echo $confirmation;
+    echo '<p>' . $confirmation . '</p>';
     include('includes/footer.php');
 ?>
