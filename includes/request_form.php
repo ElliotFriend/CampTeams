@@ -8,7 +8,16 @@
     <label for="campend">Camp End Day and Time *</label>
     <input type="text" id="campend" name="campend" value="<?php echo $_POST['campend']; ?>"><br />
     <label for="campage">Age Range of Campers *</label>
-    <input type="text" id="campage" name="campage" value="<?php echo $_POST['campage']; ?>"><br />
+    <select>
+        <?php 
+        $data = mysqli_query($dbc, "SELECT * FROM ct_ages ORDER BY age_id");
+        $row = mysqli_fetch_array($data);
+        foreach ($row as $age_group) {
+            echo "<option value=" . $age_group['age_id'] . ">" . $age_group['age_name'] . "</option>";
+        }
+        ?>
+    </select><br />
+    <!--<input type="text" id="campage" name="campage" value="<?php echo $_POST['campage']; ?>"><br />-->
     <label for="campnumbers">Approximate Number of Campers *</label>
     <input type="text" id="campnumbers" name="campnumbers" value="<?php echo $_POST['campnumbers']; ?>"><br />
     <h4>Select a camp that we already have, or create your own</h4>
