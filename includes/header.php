@@ -2,6 +2,20 @@
 <head>
     <title>Camp Teams - Saving Time for Camp Deans</title>
     <link rel="stylesheet" href="includes/style.css" />
+
+    <script language="JavaScript">
+        function showhidefield()
+        {
+            if (document.frm.whoisdean.checked)
+            {
+            document.getElementById("deansection").style.visibility = "visible";
+            }
+            else
+            {
+            document.getElementById("deansection").style.visibility = "hidden";
+            }
+        }
+    </script>
 </head>
 
 <body>

@@ -103,10 +103,12 @@
                     $confirmation = "Thank you for registering your college with us";
                 }
             }
+
             else {
                 // Give the message that neither inserts occured
                 $alert = "<p>Looks like that college already has a contact on record" . mysql_error() . "</p>";
             }
+            mysqli_close($dbc);
         }
         if (!empty($alert)) {
             echo $greeting;
@@ -119,7 +121,6 @@
         include('includes/register_form.php');
     }
 
-    mysqli_close($dbc);
     echo '<p style="color:green;">' . $confirmation . '</p>';
     include('includes/footer.php');
 ?>
