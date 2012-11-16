@@ -11,13 +11,12 @@
     <select>
         <option value=""></option>
         <?php 
-            $data = mysqli_query($dbc, "SELECT * FROM ct_ages ORDER BY age_id");
+            $data = mysqli_query($dbc, "SELECT * FROM ct_ages ORDER BY age_id ASC");
             while ($age_group = mysqli_fetch_array($data)) {
                 echo "<option value=" . $age_group['age_id'] . ">" . $age_group['age_name'] . "</option>";
             }
         ?>
     </select><br />
-    <!--<input type="text" id="campage" name="campage" value="<?php echo $_POST['campage']; ?>"><br />-->
     <label for="campnumbers">Approximate Number of Campers *</label>
     <input type="text" id="campnumbers" name="campnumbers" value="<?php echo $_POST['campnumbers']; ?>"><br />
     <h4>Select a camp that we already have, or create your own</h4>
@@ -38,35 +37,59 @@
     <input type="text" id="campweb" name="campweb" value="<?php echo $_POST['campweb']; ?>"><br />
 
     <h3>Tell us a bit about yourself</h3>
-    <label for="contactfirstname">Contact First Name *</label>
+    <label for="contactfirstname">First Name *</label>
     <input type="text" id="contactfirstname" name="contactfirstname" value="<?php echo $_POST['contactfirstname']; ?>"><br />
-    <label for="contactlastname">Contact Last Name *</label>
+    <label for="contactlastname">Last Name *</label>
     <input type="text" id="contactlastname" name="contactlastname" value="<?php echo $_POST['contactlastname']; ?>"><br />
-    <label for="contactphone">Contact Phone Number *</label>
+    <label for="contactphone">Phone Number *</label>
     <input type="text" id="contactphone" name="contactphone" value="<?php echo $_POST['contactphone']; ?>"><br />
-    <label for="contactemail">Contact Email *</label>
+    <label for="contactemail">Email *</label>
     <input type="text" id="contactemail" name="contactemail" value="<?php echo $_POST['contactemail']; ?>"><br />
     <label for="contactfacebook">Are you on Facebook? </label>
-    <input type="text" id="contactfacebook" name="contactfacebook" value="<?php echo $_POST['contactfacebook']; ?>"><br />
-    <label for="contactfacebook">Are you on Facebook? </label>
-    <input type="text" id="contactfacebook" name="contactfacebook" value="<?php echo $_POST['contactfacebook']; ?>"><br />
-    <label for="whoisdean">Are you the Dean? </label>
-    <input type="text" id="whoisdean" name="whoisdean" value="<?php echo $_POST['whoisdean']; ?>"><br />
+    <input type="radio" id="contactfacebook" name="contactfacebook" checked="checked" value="yes">Yes&nbsp;
+    <input type="radio" id="contactfacebook" name="contactfacebook" value="no">No<br />
+    <label for="contactfacebook">What is your Facebook address? </label>
+    <input type="text" id="contactfacebookaddress" name="contactfacebookaddress" value="<?php echo $_POST['contactfacebookaddress']; ?>"><br />
+    <label for="whoisdean">Are you the Dean? *</label>
+    <input type="radio" id="whoisdean" name="whoisdean" checked="checked" onclick="
+    if (this.checked) {
+        document.getElementById('deansection').style.display='none';
+    }
+    ">Yes
+    <input type="radio" id="whoisdean" name="whoisdean" onclick="
+    if (this.checked) {
+        document.getElementById('deansection').style.display='block';
+    }
+    ">No
 
+    <div id="deansection" style="display:none;">
+        <h3>Tell us a bit about the dean</h3>
+        <label for="deanfirstname">Dean First Name </label>
+        <input type="text" id="deanfirstname" name="deanfirstname" value="<?php echo $_POST['deanfirstname']; ?>"><br />
+        <label for="deanlastname">Dean Last Name </label>
+        <input type="text" id="deanlastname" name="deanlastname" value="<?php echo $_POST['deanlastname']; ?>"><br />
+        <label for="deanphone">Dean Phone Number </label>
+        <input type="text" id="deanphone" name="deanphone" value="<?php echo $_POST['deanphone']; ?>"><br />
+        <label for="deanemail">Dean Email </label>
+        <input type="text" id="deanemail" name="deanemail" value="<?php echo $_POST['deanemail']; ?>"><br />
+        <label for="deanfacebook">Is the dean on Facebook? </label>
+        <input type="radio" id="deanfacebook" name="deanfacebook" checked="checked" value="yes">Yes&nbsp;
+        <input type="radio" id="deanfacebook" name="deanfacebook" value="no">No<br />
+        <label for="deanfacebook">What is the dean's Facebook address? </label>
+        <input type="text" id="deanfacebookaddress" name="deanfacebookaddress" value="<?php echo $_POST['deanfacebookaddress']; ?>"><br />
+    </div>
 
-    <h3>Tell us a bit about the dean, if it's someone other than you</h3>
-    <label for="deanfirstname">Dean First Name </label>
-    <input type="text" id="deanfirstname" name="deanfirstname" value="<?php echo $_POST['deanfirstname']; ?>"><br />
-    <label for="deanlastname">Dean Last Name </label>
-    <input type="text" id="deanlastname" name="deanlastname" value="<?php echo $_POST['deanlastname']; ?>"><br />
-    <label for="deanphone">Dean Phone Number </label>
-    <input type="text" id="deanphone" name="deanphone" value="<?php echo $_POST['deanphone']; ?>"><br />
-    <label for="deanemail">Dean Email </label>
-    <input type="text" id="deanemail" name="deanemail" value="<?php echo $_POST['deanemail']; ?>"><br />
-    <label for="deanfacebook">Is the dean on Facebook? </label>
-    <input type="text" id="deanfacebook" name="deanfacebook" value="<?php echo $_POST['deanfacebook']; ?>"><br />
-    <label for="deanfacebook">Is the dean on Facebook? </label>
-    <input type="text" id="deanfacebook" name="deanfacebook" value="<?php echo $_POST['deanfacebook']; ?>"><br />
+    <h3>Tell us which colleges you would like to contact</h3>
+    <?php
+        // Query for all the information of all the colleges
+        $colleges = mysqli_query($dbc, "SELECT * FROM ct_colleges ORDER BY college_name ASC");
+        while ($row = mysqli_fetch_array($colleges)) {
+            echo '<input type="checkbox" id="collegeselection" name="collegeselection" value="' .
+                $row['college_id'] . '" />' . $row['college_name'] . ' - <em>' . $row['college_city'] .
+                ', ' . $row['college_state'] . '</em><br />';
+        }
+    ?>
+    <br />
 
     <input type="submit" value="Request Camp Teams" name="submit" />
 </form>
