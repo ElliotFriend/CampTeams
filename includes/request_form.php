@@ -9,12 +9,12 @@
     <input type="text" id="campend" name="campend" value="<?php echo $_POST['campend']; ?>"><br />
     <label for="campage">Age Range of Campers *</label>
     <select>
+        <option value=""></option>
         <?php 
-        $data = mysqli_query($dbc, "SELECT * FROM ct_ages ORDER BY age_id");
-        $row = mysqli_fetch_array($data);
-        foreach ($row as $age_group) {
-            echo "<option value=" . $age_group['age_id'] . ">" . $age_group['age_name'] . "</option>";
-        }
+            $data = mysqli_query($dbc, "SELECT * FROM ct_ages ORDER BY age_id");
+            while ($age_group = mysqli_fetch_array($data)) {
+                echo "<option value=" . $age_group['age_id'] . ">" . $age_group['age_name'] . "</option>";
+            }
         ?>
     </select><br />
     <!--<input type="text" id="campage" name="campage" value="<?php echo $_POST['campage']; ?>"><br />-->
